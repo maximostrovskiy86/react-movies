@@ -1,6 +1,23 @@
-import css from './SearchBar.module.css';
+import css from "./SearchBar.module.css";
 
-const SearchBar = () => {
+interface OrderFormProps {
+  onSubmit: (value: string) => void;
+}
+
+const SearchBar = ({ onSubmit }: OrderFormProps) => {
+
+  const handleSubmit = async (formData: FormData) => {
+    const data = formData.get("query") as string;
+
+    if (data === "") {
+      alert("Please enter search topic!");
+      return;
+    }
+    
+    onSubmit(data);
+  };
+
+
   return (
     <header className={css.header}>
       <div className={css.container}>
@@ -12,7 +29,7 @@ const SearchBar = () => {
         >
           Powered by TMDB
         </a>
-        <form className={css.form}>
+        <form className={css.form} action={handleSubmit}>
           <input
             className={css.input}
             type="text"
@@ -28,7 +45,7 @@ const SearchBar = () => {
       </div>
     </header>
 
-  )
-}
+  );
+};
 
 export default SearchBar;

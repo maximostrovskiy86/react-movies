@@ -21,22 +21,21 @@ const fetchGetMediaTrending = async (): Promise<Movie[]> => {
     }
   });
 
-  console.log("response", response);
-
   return response.data.results;
 };
 
-// const fetchGetMediaTrending = async () => {
-//     const response = await axios
-//       .get(`${BASE_FETCH_URL}/trending/movie/day?&api_key=${API_KEY}`)
-//     return response.data;
-// }
+const fetchGetMediaSearch = async (query: string): Promise<Movie[]> => {
+  const response = await axios
+    .get<TrendingMoviesResponse>(`${BASE_FETCH_URL}/search/movie?query=${query}`, {
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MWMwOTAyNWI0YTUwMDMwN2FlMjZjODkzZjM5YzMzNyIsIm5iZiI6MTY2NzQ5NDE1OC45NDEsInN1YiI6IjYzNjNmMTBlMDkxZTYyMDA3YTFhZWE4OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.H7CY8-fTgSzUi_fcDU8sDdcVzFHfcFVAyfteGj8Ndns`
+      }
+    });
 
-// const fetchGetMediaSearch = async (query) => {
-//   const response = await axios
-//     .get(`${BASE_FETCH_URL}/search/movie?api_key=${API_KEY}&query=${query}`);
-//   return response.data;
-// };
+  console.log('response', response);
+  return response.data.results;
+};
 //
 // const getMediaMovieDetails = async (movieId) => {
 //   const response = await axios
@@ -57,8 +56,8 @@ const fetchGetMediaTrending = async (): Promise<Movie[]> => {
 // };
 
 export default {
-  fetchGetMediaTrending
-  // fetchGetMediaSearch,
+  fetchGetMediaTrending,
+  fetchGetMediaSearch,
   // getMediaMovieDetails,
   // getMediaMovieCast,
   // getMediaMovieReviews
