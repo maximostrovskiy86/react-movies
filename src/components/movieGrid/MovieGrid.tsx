@@ -7,8 +7,6 @@ interface MovieGridProps {
 
 const MovieGrid = ({ movies }: MovieGridProps) => {
 
-  console.log("moviesGRID", movies);
-
   return (
     <ul className={css.grid}>
       {movies.length > 0 && movies.map(movie => (
