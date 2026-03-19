@@ -8,11 +8,14 @@ import type { Movie } from "../../types/movie.ts";
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchMovies() {
       try {
+        setIsLoading(true);
         const data = await moviesApi.fetchGetMediaTrending();
+        setIsLoading(false);
         setMovies(data);
       } catch (error) {
         console.error("Error loading movies:", error);
@@ -37,8 +40,8 @@ function App() {
   return (
     <div className={css.container}>
       <SearchBar onSubmit={handleSearch} />
+      {isLoading && <Loader />}
       <MovieGrid movies={movies} />
-      <Loader />
     </div>
   );
 }
