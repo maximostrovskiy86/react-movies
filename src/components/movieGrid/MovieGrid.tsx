@@ -3,14 +3,17 @@ import type { Movie } from "../../types/movie";
 
 interface MovieGridProps {
   movies: Movie[];
+  onSelect: (id: number) => void;
 }
 
-const MovieGrid = ({ movies }: MovieGridProps) => {
+const MovieGrid = ({ movies, onSelect }: MovieGridProps) => {
+
 
   return (
     <ul className={css.grid}>
-      {movies.length > 0 && movies.map(movie => (
-        <li key={movie.id}>
+      {movies.map(movie => (
+
+        <li key={movie.id} onClick={() => onSelect(movie.id)}>
           <div className={css.card}>
             <img
               className={css.image}

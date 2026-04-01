@@ -1,16 +1,37 @@
 import { useState, useEffect } from "react";
 import css from "./App.module.css";
+import moviesApi from "../../services/servicesApi.ts";
+import type { Movie } from "../../types/movie.ts";
 import SearchBar from "../searchBar/SearchBar.tsx";
 import MovieGrid from "../movieGrid/MovieGrid.tsx";
 import Loader from "../loader/Loader.tsx";
-import moviesApi from "../../services/servicesApi.ts";
-import type { Movie } from "../../types/movie.ts";
 import ErrorMessage from "../errorMessage/ErrorMessage.tsx";
+import MovieModal from "../movieModal/MovieModal.tsx";
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [movie, setMovie] = useState<Movie | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  const openModal = () => setIsModalOpen(true);
+
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleClickMovie = (id: number): void => {
+    const selectedMovie = movies.find(movie => movie.id === id);
+
+    if (!selectedMovie) {
+      setIsError(true);
+      console.error("Movie not found");
+      return;
+    }
+
+    setMovie(selectedMovie);
+    openModal();
+  };
 
 
   useEffect(() => {
@@ -50,8 +71,9 @@ function App() {
   return (
     <div className={css.container}>
       <SearchBar onSubmit={handleSearch} />
-      {!isError ? <MovieGrid movies={movies} /> : <ErrorMessage />}
+      {!isError ? <MovieGrid movies={movies} onSelect={handleClickMovie} /> : <ErrorMessage />}
       {isLoading && <Loader />}
+      {isModalOpen && movie && <MovieModal onClose={closeModal} movie={movie} />}
     </div>
   );
 }
